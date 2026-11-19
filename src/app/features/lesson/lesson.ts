@@ -5,6 +5,7 @@ import { Button } from '../../ui/button/button';
 import { Icon } from '../../ui/icon/icon';
 import { ProgressBar } from '../../ui/progress-bar/progress-bar';
 import { PianoKeyboard, KeyState } from '../../ui/piano-keyboard/piano-keyboard';
+import { InputStatus } from '../../ui/input-status/input-status';
 import { Staff } from '../../ui/staff/staff';
 import { NoteInputService } from '../../core/note-input.service';
 import { SynthService } from '../../core/synth.service';
@@ -18,7 +19,7 @@ type Feedback = { kind: 'idle' | 'ok' | 'bad'; msg: string };
   selector: 'app-lesson',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Button, Icon, ProgressBar, PianoKeyboard, Staff],
+  imports: [Button, Icon, ProgressBar, PianoKeyboard, InputStatus, Staff],
   templateUrl: './lesson.html',
   styleUrl: './lesson.scss',
 })

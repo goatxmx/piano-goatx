@@ -5,6 +5,7 @@ import { Button } from '../../ui/button/button';
 import { Icon } from '../../ui/icon/icon';
 import { ProgressBar } from '../../ui/progress-bar/progress-bar';
 import { PianoKeyboard, KeyState } from '../../ui/piano-keyboard/piano-keyboard';
+import { InputStatus } from '../../ui/input-status/input-status';
 import { NoteInputService } from '../../core/note-input.service';
 import { SynthService } from '../../core/synth.service';
 import { ProgressService } from '../../core/progress.service';
@@ -21,7 +22,7 @@ const SPACING = 72;
   selector: 'app-falling',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Button, Icon, ProgressBar, PianoKeyboard],
+  imports: [Button, Icon, ProgressBar, PianoKeyboard, InputStatus],
   templateUrl: './falling.html',
   styleUrl: './falling.scss',
   host: { '[style.--spacing.px]': 'spacing', '[style.--lanes]': 'whiteCount' },

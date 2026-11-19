@@ -14,6 +14,11 @@
   &.disabled { opacity: 0.6; pointer-events: none; }
 }
 
+// Pantallas grandes / tablet: teclado más alto y cómodo.
+@media (min-width: 720px) {
+  .kb { height: clamp(200px, 26vh, 300px); }
+}
+
 .key {
   position: absolute;
   padding: 0;

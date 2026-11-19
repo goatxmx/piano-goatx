@@ -62,6 +62,8 @@ export class NoteInputService {
       return;
     }
     this.audioCtx = new AudioContext();
+    // iOS/Safari crea el contexto "suspended": sin resume() no llega audio.
+    try { await this.audioCtx.resume(); } catch { /* ignora */ }
     const source = this.audioCtx.createMediaStreamSource(this.stream);
     const analyser = this.audioCtx.createAnalyser();
     analyser.fftSize = 4096; // ventana suficiente para notas graves (~Do2)

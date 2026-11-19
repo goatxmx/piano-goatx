@@ -12,33 +12,37 @@
     </button>
   </header>
 
-  <!-- Zona de notas que caen -->
-  <div class="stage">
-    <div class="lanes">
-      @for (b of bars; track b.i) {
-        <div
-          class="bar"
-          [class.black]="b.geo.black"
-          [class.done]="stateFor(b.i) === 'done'"
-          [class.current]="stateFor(b.i) === 'current'"
-          [style.left.%]="b.geo.leftPct"
-          [style.width.%]="b.geo.widthPct"
-          [style.transform]="'translateY(' + translateFor(b.i) + 'px)'">
-          <span class="n">{{ b.name }}</span>
-        </div>
-      }
-    </div>
-    <div class="hitline" aria-hidden="true"></div>
-  </div>
+  <ui-input-status class="f-input" />
 
-  <!-- Teclado -->
-  <div class="f-keyboard" [class.muted]="demoPlaying()">
-    <ui-piano-keyboard
-      [range]="song.range"
-      [showLabels]="progressSvc.settings().showLabels"
-      [keyboardControl]="true"
-      [disabled]="finished() || demoPlaying()"
-      [states]="keyStates()" />
+  <div class="playfield">
+    <!-- Zona de notas que caen -->
+    <div class="stage">
+      <div class="lanes">
+        @for (b of bars; track b.i) {
+          <div
+            class="bar"
+            [class.black]="b.geo.black"
+            [class.done]="stateFor(b.i) === 'done'"
+            [class.current]="stateFor(b.i) === 'current'"
+            [style.left.%]="b.geo.leftPct"
+            [style.width.%]="b.geo.widthPct"
+            [style.transform]="'translateY(' + translateFor(b.i) + 'px)'">
+            <span class="n">{{ b.name }}</span>
+          </div>
+        }
+      </div>
+      <div class="hitline" aria-hidden="true"></div>
+    </div>
+
+    <!-- Teclado -->
+    <div class="f-keyboard" [class.muted]="demoPlaying()">
+      <ui-piano-keyboard
+        [range]="song.range"
+        [showLabels]="progressSvc.settings().showLabels"
+        [keyboardControl]="true"
+        [disabled]="finished() || demoPlaying()"
+        [states]="keyStates()" />
+    </div>
   </div>
 
   <!-- Fin -->

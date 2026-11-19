@@ -1,0 +1,26 @@
+@if (input.micStatus() === 'on') {
+  <div class="chip live">
+    <span class="dot" [style.transform]="'scale(' + (1 + level() * 0.8) + ')'"></span>
+    Escuchando tu piano
+  </div>
+} @else if (input.midiStatus() === 'on') {
+  <div class="chip live"><ui-icon name="midi" [size]="18" /> Teclado USB conectado</div>
+} @else {
+  <div class="activate">
+    <button class="act" (click)="startMic()">
+      <ui-icon name="mic" [size]="18" /> Activar micrófono
+    </button>
+    @if (midiSupported) {
+      <button class="act ghost" (click)="startMidi()">
+        <ui-icon name="midi" [size]="18" /> USB
+      </button>
+    }
+  </div>
+  @if (input.micStatus() === 'denied') {
+    <span class="hint err">Diste "no" al micrófono. Actívalo en los ajustes de Safari y recarga.</span>
+  } @else if (input.micStatus() === 'starting') {
+    <span class="hint">Pidiendo permiso…</span>
+  } @else {
+    <span class="hint">Toca para usar tu piano real. O usa el teclado de abajo.</span>
+  }
+}

@@ -1,0 +1,53 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  justify-content: center;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  &.live { background: var(--ok-soft); color: var(--ok); }
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ok);
+  transition: transform 80ms linear;
+}
+
+.activate { display: inline-flex; gap: var(--sp-2); }
+
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 40px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  border: none;
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  &:active { transform: scale(0.97); }
+  &.ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); }
+}
+
+.hint {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  &.err { color: var(--bad); }
+}
