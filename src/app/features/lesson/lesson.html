@@ -1,0 +1,57 @@
+<div class="lesson">
+  <header class="l-top">
+    <button ui-button variant="ghost" (click)="leave()" aria-label="Salir de la lección">
+      <ui-icon name="close" [size]="22" />
+    </button>
+    <ui-progress-bar [value]="progressPct()" [label]="'Avance de ' + lesson.title" />
+  </header>
+
+  <main class="l-body">
+    <p class="prompt">{{ prompt() }}</p>
+
+    <!-- Zona central según el tipo -->
+    <div class="stage">
+      @if (step().type === 'read-staff') {
+        <ui-staff [midi]="step().notes[0]" [showName]="!!step().showName" />
+      }
+
+      @if (step().type === 'quiz-name') {
+        <div class="options">
+          @for (opt of quizOptions(); track opt.midi) {
+            <button
+              class="option"
+              [class.ok]="quizResult()[opt.midi] === 'ok'"
+              [class.bad]="quizResult()[opt.midi] === 'bad'"
+              [disabled]="finished()"
+              (click)="choose(opt.midi)">
+              {{ opt.name }}
+            </button>
+          }
+        </div>
+      }
+
+      @if (step().type === 'learn' || step().type === 'listen-repeat') {
+        <button ui-button variant="secondary" (click)="playDemo(step().type === 'learn' ? step().notes.slice(0,1) : step().notes)" [disabled]="demoPlaying()">
+          <ui-icon name="volume" [size]="20" /> Escuchar otra vez
+        </button>
+      }
+    </div>
+
+    <!-- Feedback: color + ícono + texto (nunca solo color) -->
+    <div class="feedback" [class.ok]="feedback().kind === 'ok'" [class.bad]="feedback().kind === 'bad'" aria-live="polite">
+      @if (feedback().kind === 'ok') { <ui-icon name="check" [size]="22" /> }
+      @else if (feedback().kind === 'bad') { <ui-icon name="close" [size]="22" /> }
+      <span>{{ feedback().msg }}</span>
+    </div>
+  </main>
+
+  <!-- Teclado -->
+  <div class="l-keyboard" [class.muted]="demoPlaying()">
+    <ui-piano-keyboard
+      [range]="lesson.range"
+      [showLabels]="progressSvc.settings().showLabels"
+      [keyboardControl]="true"
+      [disabled]="finished() || demoPlaying() || step().type === 'quiz-name'"
+      [states]="keyStates()" />
+  </div>
+</div>

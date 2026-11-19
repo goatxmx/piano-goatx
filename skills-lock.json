@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "skills": {
+    "emil-design-eng": {
+      "source": "emilkowalski/skills",
+      "commit": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
+      "sourceType": "github",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "computedHash": "e1b377ccde1d32743d1d3f7d8626629deb8055c9114d180c184697928cc66cc6"
+    },
+    "refero-design": {
+      "source": "referodesign/refero_skill",
+      "commit": "2382e518f90096df607196b9a635da2d1bc142f9",
+      "sourceType": "github",
+      "skillPath": "skills/refero-design/SKILL.md",
+      "computedHash": "5145ad0b1ccd208465dcbc1127da5e0f2eb77ced9a1e5ee8e1c57eed400c0ace"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+// Piano GoatX · estilos globales
+@use 'styles/tokens';
+
+// --- Reset discreto -------------------------------------------------------
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-display);
+  text-wrap: balance;
+}
+h1 { font-size: var(--fs-2xl); }
+h2 { font-size: var(--fs-xl); }
+h3 { font-size: var(--fs-lg); font-weight: var(--fw-semi); }
+
+p { line-height: var(--lh-base); text-wrap: pretty; }
+
+a { color: var(--accent-strong); text-underline-offset: 2px; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+
+img, svg { display: block; max-width: 100%; }
+
+ul, ol { padding: 0; list-style: none; }
+
+// --- Foco accesible (AA) --------------------------------------------------
+:focus { outline: none; }
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+// --- Utilidades mínimas ---------------------------------------------------
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.page {
+  max-width: var(--app-max);
+  margin-inline: auto;
+  padding: var(--sp-5) var(--sp-4);
+}
+
+// Números tabulares para contadores (XP, racha)
+.tnum { font-variant-numeric: tabular-nums; }

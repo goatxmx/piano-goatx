@@ -1,0 +1,169 @@
+.estilos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-7);
+  padding-bottom: var(--sp-8);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  img { border-radius: var(--r-md); box-shadow: var(--sh-1); }
+  h1 { font-size: var(--fs-xl); }
+  .sub { color: var(--text-soft); font-size: var(--fs-sm); }
+}
+
+.theme {
+  display: inline-flex;
+  padding: 3px;
+  gap: 3px;
+  background: var(--bg-sunken);
+  border-radius: var(--r-pill);
+}
+.chip {
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  min-height: 40px;
+  transition: background-color var(--dur-fast) var(--ease-out);
+  &.on { background: var(--surface); color: var(--text); box-shadow: var(--sh-1); }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+h2 { font-size: var(--fs-lg); }
+.note { color: var(--text-soft); font-size: var(--fs-sm); max-width: var(--measure); margin-top: calc(-1 * var(--sp-2)); }
+code {
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  color: var(--text-soft);
+  background: var(--bg-sunken);
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+}
+
+// Colores
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--sp-3);
+}
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+.chip-color {
+  height: 44px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+}
+.s-label { font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+
+// Tipografía
+.type-list { display: flex; flex-direction: column; gap: var(--sp-4); }
+.type-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--sp-4);
+  align-items: baseline;
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+.type-meta { display: flex; flex-direction: column; gap: var(--sp-1); span { font-size: var(--fs-sm); color: var(--text-soft); } }
+.type-sample { line-height: var(--lh-tight); &.display { font-family: var(--font-display); font-weight: var(--fw-semi); } }
+@media (max-width: 520px) {
+  .type-row { grid-template-columns: 1fr; gap: var(--sp-2); }
+}
+
+// Filas genéricas
+.row { display: flex; gap: var(--sp-3); align-items: center; }
+.row.wrap { flex-wrap: wrap; }
+
+.xp {
+  display: inline-flex; align-items: center; gap: var(--sp-1);
+  color: var(--accent-strong); font-size: var(--fs-base);
+  b { font-family: var(--font-display); font-size: var(--fs-lg); }
+}
+.stars { display: inline-flex; gap: 2px; color: var(--star); }
+
+.progress-demo {
+  display: flex; flex-direction: column; gap: var(--sp-3);
+  max-width: var(--measure);
+}
+
+// Feedback
+.fb {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  font-weight: var(--fw-semi);
+  &.ok { background: var(--ok-soft); color: var(--ok); }
+  &.bad { background: var(--bad-soft); color: var(--bad); }
+}
+
+// Iconos
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--sp-2);
+}
+.icon-cell {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--text);
+  code { font-size: 0.7em; }
+}
+
+// Pentagrama
+.staff-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-3);
+  ui-staff {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: var(--sp-2);
+  }
+}
+
+// Escalas
+.scale-row { display: flex; flex-wrap: wrap; gap: var(--sp-4); align-items: flex-end; }
+.scale-item { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+.bar { display: block; background: var(--accent); border-radius: 2px; min-width: 4px; min-height: 4px; }
+.radius-box {
+  display: block; width: 56px; height: 56px;
+  background: var(--accent-soft);
+  border: 2px solid var(--accent);
+}
+
+.foot {
+  color: var(--text-faint);
+  font-size: var(--fs-sm);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-4);
+}

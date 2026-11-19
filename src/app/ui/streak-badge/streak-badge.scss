@@ -1,0 +1,19 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-3) var(--sp-1) var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--bg-sunken);
+  color: var(--text-faint);
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+}
+
+:host(.active) {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.n { font-size: var(--fs-lg); }

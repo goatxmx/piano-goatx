@@ -1,0 +1,99 @@
+:host {
+  display: block;
+  width: 100%;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.kb {
+  position: relative;
+  width: 100%;
+  // Alto cómodo; las teclas blancas marcan el mínimo táctil (≥44px) por su ancho.
+  height: clamp(150px, 34vw, 230px);
+
+  &.disabled { opacity: 0.6; pointer-events: none; }
+}
+
+// --- Teclas blancas ---
+.whites {
+  display: flex;
+  height: 100%;
+  gap: 4px;
+}
+
+.key {
+  border: 1px solid var(--border-strong);
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  // Feedback inmediato: la transición es muy corta y solo de color/forma.
+  transition: transform 90ms var(--ease-out), background-color 90ms var(--ease-out);
+
+  .label {
+    font-family: var(--font-sans);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-sm);
+    padding-bottom: var(--sp-3);
+    pointer-events: none;
+  }
+  .hotkey {
+    position: absolute;
+    top: var(--sp-2);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tr-caps);
+    color: var(--text-faint);
+    pointer-events: none;
+  }
+}
+
+.white {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--key-white);
+  color: var(--key-label);
+  border-radius: 4px 4px var(--r-md) var(--r-md);
+  box-shadow: var(--sh-key);
+
+  &.press { background: var(--key-press); transform: translateY(2px); box-shadow: none; }
+  &.hint  { background: var(--key-hint); border-color: var(--key-hint-edge); }
+  &.ok    { background: var(--key-ok);  color: #fff; border-color: var(--key-ok); }
+  &.bad   { background: var(--key-bad); color: #fff; border-color: var(--key-bad); }
+}
+
+// --- Teclas negras (superpuestas) ---
+.blacks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; // solo las teclas reciben eventos
+}
+
+.black {
+  position: absolute;
+  top: 0;
+  height: 62%;
+  background: var(--key-black);
+  color: #e9ddc8;
+  border: none;
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35), var(--sh-2);
+  pointer-events: auto;
+  z-index: var(--z-keyboard);
+
+  .label { font-size: var(--fs-xs); padding-bottom: var(--sp-2); opacity: 0.85; }
+
+  &.press { background: var(--key-press); color: var(--ink-900); transform: translateY(2px); box-shadow: none; }
+  &.hint  { background: var(--key-hint-edge); color: var(--ink-900); }
+  &.ok    { background: var(--key-ok); color: #fff; }
+  &.bad   { background: var(--key-bad); color: #fff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .key { transition: background-color 90ms linear; }
+  .key.press { transform: none; }
+}

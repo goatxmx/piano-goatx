@@ -1,0 +1,117 @@
+<div class="page setup">
+  <header class="top">
+    <a ui-button variant="ghost" routerLink="/" aria-label="Volver"><ui-icon name="left" [size]="22" /></a>
+    <h1>¿Cómo vas a tocar?</h1>
+  </header>
+
+  <p class="lead">Elige una opción. Puedes cambiarla cuando quieras.</p>
+
+  <div class="choices">
+    <!-- Micrófono -->
+    <button class="choice" [class.sel]="choice() === 'mic'" (click)="choose('mic')">
+      <span class="ic"><ui-icon name="mic" [size]="28" /></span>
+      <span class="t">
+        <b>Tu piano o teclado</b>
+        <small>Por el micrófono. Funciona con cualquier instrumento real.</small>
+      </span>
+    </button>
+
+    <!-- MIDI -->
+    <button class="choice" [class.sel]="choice() === 'midi'" (click)="choose('midi')">
+      <span class="ic"><ui-icon name="midi" [size]="28" /></span>
+      <span class="t">
+        <b>Teclado por cable USB</b>
+        <small>Máxima precisión. En Chrome o Edge (no funciona en iPhone).</small>
+      </span>
+    </button>
+
+    <!-- Pantalla -->
+    <button class="choice" [class.sel]="choice() === 'screen'" (click)="choose('screen')">
+      <span class="ic"><ui-icon name="screen" [size]="28" /></span>
+      <span class="t">
+        <b>El teclado de la pantalla</b>
+        <small>¿Sin instrumento? Toca aquí mismo con el dedo.</small>
+      </span>
+    </button>
+  </div>
+
+  <!-- Panel del micrófono -->
+  @if (choice() === 'mic') {
+    <section class="panel">
+      <p class="privacy">
+        <ui-icon name="lock" [size]="18" />
+        El sonido se procesa aquí en tu teléfono o compu y <b>nunca sale de tu dispositivo</b>.
+      </p>
+
+      @switch (input.micStatus()) {
+        @case ('denied') {
+          <p class="err">No diste permiso al micrófono. Revísalo en los ajustes del navegador y vuelve a intentar.</p>
+        }
+        @case ('unsupported') {
+          <p class="err">Este navegador no permite usar el micrófono.</p>
+        }
+        @default {
+          <div class="meter" aria-hidden="true">
+            <span class="fill" [style.width.%]="levelPct()"></span>
+          </div>
+          <p class="detected">
+            @if (detected()) { Escucho: <b>{{ detected() }}</b> }
+            @else { Toca una nota en tu piano… }
+          </p>
+
+          <label class="slider">
+            <span>Sensibilidad</span>
+            <input type="range" min="3" max="40" [value]="thresholdPct()" (input)="onThreshold($event)" />
+            <small>Si cuenta ruido de más, baja la sensibilidad.</small>
+          </label>
+        }
+      }
+    </section>
+  }
+
+  <!-- Panel MIDI -->
+  @if (choice() === 'midi') {
+    <section class="panel">
+      @switch (input.midiStatus()) {
+        @case ('on') {
+          <p class="ok-line"><ui-icon name="check" [size]="20" /> Conectado: {{ input.midiDevices().join(', ') }}</p>
+        }
+        @case ('no-device') {
+          <p>Conecta tu teclado por USB y enciéndelo. Lo detecto solo.</p>
+        }
+        @case ('unsupported') {
+          <p class="err">Este navegador no soporta MIDI. Prueba con Chrome o Edge.</p>
+        }
+        @case ('denied') {
+          <p class="err">No se pudo acceder al MIDI. Da permiso y reintenta.</p>
+        }
+        @default { <p>Buscando teclados…</p> }
+      }
+    </section>
+  }
+
+  <!-- Panel pantalla -->
+  @if (choice() === 'screen') {
+    <section class="panel">
+      <p>Pruébalo: toca las teclas.</p>
+      <ui-piano-keyboard [range]="[60, 72]" [showLabels]="progress.settings().showLabels" />
+    </section>
+  }
+
+  <!-- Ajustes rápidos -->
+  <section class="prefs">
+    <h2>Ajustes</h2>
+    <label class="switch" (click)="toggleAnyOctave()">
+      <span><b>Aceptar cualquier octava</b><small>Útil con teclados chicos. Recomendado.</small></span>
+      <span class="toggle" [class.on]="progress.settings().anyOctave"></span>
+    </label>
+    <label class="switch" (click)="toggleLabels()">
+      <span><b>Mostrar nombres en las teclas</b><small>Do, Re, Mi… sobre cada tecla.</small></span>
+      <span class="toggle" [class.on]="progress.settings().showLabels"></span>
+    </label>
+  </section>
+
+  <button ui-button variant="primary" size="lg" [block]="true" [disabled]="!choice()" (click)="finish()">
+    Empezar a aprender
+  </button>
+</div>

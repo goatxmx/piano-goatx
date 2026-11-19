@@ -1,0 +1,56 @@
+<div
+  class="kb"
+  [class.disabled]="disabled()"
+  role="group"
+  aria-label="Teclado de piano">
+  <!-- Teclas blancas -->
+  <div class="whites">
+    @for (w of layout().whites; track w.midi) {
+      <button
+        type="button"
+        class="key white"
+        [class.hint]="stateOf(w.midi) === 'hint'"
+        [class.press]="stateOf(w.midi) === 'press'"
+        [class.ok]="stateOf(w.midi) === 'ok'"
+        [class.bad]="stateOf(w.midi) === 'bad'"
+        [attr.aria-label]="w.aria"
+        [attr.tabindex]="disabled() ? -1 : 0"
+        (pointerdown)="press(w.midi, $event)"
+        (pointerup)="release(w.midi)"
+        (pointerleave)="release(w.midi)"
+        (pointercancel)="release(w.midi)">
+        @if (showLabels()) {
+          <span class="label">{{ w.label }}</span>
+        }
+        @if (w.hotkey && keyboardControl()) {
+          <span class="hotkey" aria-hidden="true">{{ w.hotkey }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Teclas negras (superpuestas) -->
+  <div class="blacks" aria-hidden="false">
+    @for (b of layout().blacks; track b.midi) {
+      <button
+        type="button"
+        class="key black"
+        [class.hint]="stateOf(b.midi) === 'hint'"
+        [class.press]="stateOf(b.midi) === 'press'"
+        [class.ok]="stateOf(b.midi) === 'ok'"
+        [class.bad]="stateOf(b.midi) === 'bad'"
+        [style.left.%]="b.leftPct"
+        [style.width.%]="layout().blackWidthPct"
+        [attr.aria-label]="b.aria"
+        [attr.tabindex]="disabled() ? -1 : 0"
+        (pointerdown)="press(b.midi, $event)"
+        (pointerup)="release(b.midi)"
+        (pointerleave)="release(b.midi)"
+        (pointercancel)="release(b.midi)">
+        @if (showLabels()) {
+          <span class="label">{{ b.label }}</span>
+        }
+      </button>
+    }
+  </div>
+</div>

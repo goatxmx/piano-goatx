@@ -1,0 +1,50 @@
+<div class="page complete" [class.show]="revealed()">
+  <div class="card">
+    <p class="eyebrow">Lección terminada</p>
+    <h1>{{ lessonTitle || '¡Muy bien!' }}</h1>
+
+    <div class="stars" [attr.aria-label]="stars + ' de 3 estrellas'">
+      @for (s of starSlots; track s) {
+        <span class="star" [class.on]="s <= stars" [style.--i]="s">
+          <ui-icon [name]="s <= stars ? 'star-fill' : 'star'" [size]="52" />
+        </span>
+      }
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="k"><ui-icon name="bolt" [size]="22" /></span>
+        <b class="tnum">+{{ xp }}</b>
+        <small>XP</small>
+      </div>
+      <div class="stat">
+        <span class="k"><ui-icon name="check" [size]="22" /></span>
+        <b class="tnum">{{ accuracyPct }}%</b>
+        <small>precisión</small>
+      </div>
+      <div class="stat">
+        <span class="k"><ui-icon name="flame" [size]="22" /></span>
+        <b class="tnum">{{ progress.streak() }}</b>
+        <small>{{ progress.streak() === 1 ? 'día' : 'días' }} de racha</small>
+      </div>
+    </div>
+
+    <div class="actions">
+      @if (nextId) {
+        <button ui-button variant="primary" size="lg" [block]="true" (click)="goNext()">
+          Siguiente: {{ nextTitle }} <ui-icon name="right" [size]="20" />
+        </button>
+      } @else {
+        <button ui-button variant="primary" size="lg" [block]="true" (click)="goNext()">
+          Volver al inicio
+        </button>
+      }
+      <div class="secondary">
+        <button ui-button variant="ghost" (click)="repeat()">
+          <ui-icon name="repeat" [size]="20" /> Repetir
+        </button>
+        <a ui-button variant="ghost" routerLink="/">Inicio</a>
+      </div>
+    </div>
+  </div>
+</div>

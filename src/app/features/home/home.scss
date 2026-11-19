@@ -1,0 +1,92 @@
+.home-top {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.brand {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-family: var(--font-display); font-weight: var(--fw-bold); font-size: var(--fs-lg);
+  img { border-radius: var(--r-sm); }
+}
+.hud { display: flex; align-items: center; gap: var(--sp-3); }
+.xp {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--accent-strong); font-family: var(--font-display); font-weight: var(--fw-bold);
+}
+.gear {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  color: var(--text-soft); border-radius: var(--r-pill);
+  &:active { transform: scale(0.95); }
+}
+
+.path { display: flex; flex-direction: column; gap: var(--sp-6); }
+h1 { font-size: var(--fs-2xl); }
+
+.unit { display: flex; flex-direction: column; gap: var(--sp-4); }
+.unit-head {
+  padding: var(--sp-4);
+  background: var(--accent-soft);
+  border-radius: var(--r-lg);
+  h2 { font-size: var(--fs-lg); color: var(--accent-press); }
+  p { color: var(--text-soft); font-size: var(--fs-sm); }
+}
+
+.nodes { display: flex; flex-direction: column; gap: var(--sp-1); }
+.node-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0;
+  // Línea del camino que conecta los nodos.
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 31px; top: 50%; bottom: -8px;
+    width: 3px;
+    background: var(--border);
+  }
+  &:last-child::before { display: none; }
+}
+
+.node {
+  display: grid; place-items: center;
+  width: 64px; height: 64px; flex: none;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  color: var(--text-faint);
+  z-index: 1;
+  transition: transform var(--dur-fast) var(--ease-out);
+  &:active { transform: scale(0.95); }
+
+  &.done { background: var(--ok); border-color: var(--ok); color: #fff; }
+  &.current {
+    background: var(--accent); border-color: var(--accent); color: var(--text-on-accent);
+    box-shadow: 0 0 0 6px var(--accent-soft);
+  }
+  &.locked { background: var(--bg-sunken); border-style: dashed; }
+}
+
+.node-label {
+  display: flex; flex-direction: column; gap: 2px;
+  b { font-family: var(--font-display); font-weight: var(--fw-semi); font-size: var(--fs-base); }
+}
+.mini-stars { display: inline-flex; gap: 2px; color: var(--star); }
+.cta { color: var(--accent-strong); font-weight: var(--fw-bold); font-size: var(--fs-sm); }
+.muted { color: var(--text-faint); font-size: var(--fs-sm); }
+
+.home-foot {
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+  a { color: var(--text-faint); font-size: var(--fs-sm); }
+}

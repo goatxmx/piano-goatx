@@ -1,0 +1,175 @@
+<div class="page estilos">
+  <header class="head">
+    <div class="brand">
+      <img src="icon.svg" alt="" width="40" height="40" />
+      <div>
+        <h1>Piano GoatX</h1>
+        <p class="sub">Cuaderno de música cálido · sistema de estilos</p>
+      </div>
+    </div>
+
+    <div class="theme" role="group" aria-label="Tema">
+      @for (m of ['auto', 'light', 'dark']; track m) {
+        <button
+          class="chip"
+          [class.on]="theme() === m"
+          (click)="setTheme($any(m))">
+          {{ m === 'auto' ? 'Auto' : m === 'light' ? 'Claro' : 'Oscuro' }}
+        </button>
+      }
+    </div>
+  </header>
+
+  <!-- Colores -->
+  <section>
+    <h2>Color</h2>
+    <p class="note">Un solo acento (terracota) para progreso y CTA. Verde y rojo, solo para feedback.</p>
+    <div class="swatches">
+      @for (c of colors; track c.token) {
+        <div class="swatch">
+          <span class="chip-color" [style.background]="'var(' + c.token + ')'"></span>
+          <span class="s-label">{{ c.label }}</span>
+          <code>{{ c.token }}</code>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Tipografía -->
+  <section>
+    <h2>Tipografía</h2>
+    <p class="note">Fraunces (display, números) + Hanken Grotesk (texto). Escala fluida con clamp().</p>
+    <div class="type-list">
+      @for (t of typeScale; track t.token) {
+        <div class="type-row">
+          <div class="type-meta">
+            <code>{{ t.token }}</code>
+            <span>{{ t.label }}</span>
+          </div>
+          <div
+            class="type-sample"
+            [class.display]="t.token !== '--fs-base' && t.token !== '--fs-sm' && t.token !== '--fs-xs'"
+            [style.fontSize]="'var(' + t.token + ')'">
+            {{ t.sample }}
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Botones -->
+  <section>
+    <h2>Botones</h2>
+    <div class="row">
+      <button ui-button variant="primary" size="lg">Empezar lección</button>
+      <button ui-button variant="secondary">Probar micrófono</button>
+      <button ui-button variant="ghost">Más tarde</button>
+      <button ui-button variant="danger">Borrar progreso</button>
+    </div>
+    <div class="row">
+      <button ui-button variant="primary">
+        <ui-icon name="play" [size]="20" /> Con ícono
+      </button>
+      <button ui-button variant="secondary" disabled>Deshabilitado</button>
+    </div>
+  </section>
+
+  <!-- Progreso + racha + XP -->
+  <section>
+    <h2>Progreso, racha y XP</h2>
+    <div class="row wrap">
+      <ui-streak-badge [days]="7" />
+      <ui-streak-badge [days]="1" />
+      <ui-streak-badge [days]="0" />
+      <span class="xp"><ui-icon name="bolt" [size]="20" /> <b class="tnum">120</b> XP</span>
+      <span class="stars">
+        <ui-icon name="star-fill" [size]="22" />
+        <ui-icon name="star-fill" [size]="22" />
+        <ui-icon name="star" [size]="22" />
+      </span>
+    </div>
+    <div class="progress-demo">
+      <ui-progress-bar [value]="progress()" />
+      <button ui-button variant="secondary" (click)="bump()">Avanzar progreso</button>
+    </div>
+  </section>
+
+  <!-- Feedback (color + forma + texto) -->
+  <section>
+    <h2>Feedback</h2>
+    <p class="note">Nunca solo color: siempre ícono + texto también (accesibilidad AA).</p>
+    <div class="row wrap">
+      <div class="fb ok"><ui-icon name="check" [size]="22" /> ¡Correcto!</div>
+      <div class="fb bad"><ui-icon name="close" [size]="22" /> Esa fue Mi, busca Re</div>
+    </div>
+  </section>
+
+  <!-- Iconos -->
+  <section>
+    <h2>Iconografía propia (SVG)</h2>
+    <p class="note">Trazo consistente. Nada de emojis como íconos.</p>
+    <div class="icon-grid">
+      @for (ic of icons; track ic) {
+        <div class="icon-cell">
+          <ui-icon [name]="ic" [size]="26" />
+          <code>{{ ic }}</code>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Teclado -->
+  <section>
+    <h2>Teclado de piano</h2>
+    <p class="note">
+      Toca con el ratón o el dedo (suena). Estados de ejemplo: pista (Do, Sol),
+      correcta (Re), incorrecta (Mi). Con teclado físico: A S D F G H J…
+    </p>
+    <div class="row wrap">
+      <button ui-button variant="secondary" (click)="kbLabels.set(!kbLabels())">
+        {{ kbLabels() ? 'Ocultar nombres' : 'Mostrar nombres' }}
+      </button>
+    </div>
+    <ui-piano-keyboard
+      [range]="[60, 72]"
+      [showLabels]="kbLabels()"
+      [keyboardControl]="true"
+      [states]="kbStates" />
+  </section>
+
+  <!-- Pentagrama -->
+  <section>
+    <h2>Pentagrama (SVG propio)</h2>
+    <p class="note">Clave de Sol, provisional (sin VexFlow). Do central con línea adicional.</p>
+    <div class="staff-row">
+      @for (n of staffNotes; track n) {
+        <ui-staff [midi]="n" [showName]="true" />
+      }
+    </div>
+  </section>
+
+  <!-- Espaciado + radios -->
+  <section>
+    <h2>Espaciado y radios</h2>
+    <div class="scale-row">
+      @for (s of spacing; track s) {
+        <div class="scale-item">
+          <span class="bar" [style.width]="'var(' + s + ')'" [style.height]="'var(' + s + ')'"></span>
+          <code>{{ s }}</code>
+        </div>
+      }
+    </div>
+    <div class="scale-row">
+      @for (r of radii; track r) {
+        <div class="scale-item">
+          <span class="radius-box" [style.borderRadius]="'var(' + r + ')'"></span>
+          <code>{{ r }}</code>
+        </div>
+      }
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>Fase 0 · Identidad. Los emojis de <code>lessons.ts</code> son temporales y se reemplazan por estos íconos.</p>
+  </footer>
+</div>

@@ -1,0 +1,33 @@
+:host { display: block; }
+
+.staff {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
+}
+
+.ln {
+  stroke: var(--staff-line);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.clef {
+  fill: var(--staff-note);
+  font-size: 86px;
+  font-family: 'Segoe UI Symbol', 'Noto Music', serif;
+  dominant-baseline: alphabetic;
+}
+
+.head {
+  fill: var(--staff-note);
+}
+
+.name {
+  fill: var(--text-soft);
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: 18px;
+  text-anchor: middle;
+}

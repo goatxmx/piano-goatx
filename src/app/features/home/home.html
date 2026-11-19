@@ -1,0 +1,65 @@
+<header class="home-top">
+  <div class="brand">
+    <img src="icon.svg" alt="" width="36" height="36" />
+    <span>Piano GoatX</span>
+  </div>
+  <div class="hud">
+    <ui-streak-badge [days]="progress.streak()" />
+    <span class="xp"><ui-icon name="bolt" [size]="18" /> <b class="tnum">{{ progress.xp() }}</b></span>
+    <a class="gear" routerLink="/setup" aria-label="Ajustes y entrada"><ui-icon name="settings" [size]="22" /></a>
+  </div>
+</header>
+
+<main class="page path">
+  <h1>Tu camino</h1>
+
+  @for (u of units(); track u.id) {
+    <section class="unit">
+      <div class="unit-head">
+        <h2>{{ u.title }}</h2>
+        <p>{{ u.description }}</p>
+      </div>
+
+      <ol class="nodes">
+        @for (l of u.lessons; track l.id) {
+          <li class="node-row" [class.current]="l.current">
+            @if (l.unlocked) {
+              <a class="node" [class.done]="l.done" [class.current]="l.current" [routerLink]="['/leccion', l.id]">
+                @if (l.done) {
+                  <ui-icon name="check" [size]="26" />
+                } @else if (l.current) {
+                  <ui-icon name="play" [size]="24" />
+                } @else {
+                  <ui-icon name="note" [size]="24" />
+                }
+              </a>
+            } @else {
+              <span class="node locked" aria-disabled="true">
+                <ui-icon name="lock" [size]="22" />
+              </span>
+            }
+
+            <div class="node-label">
+              <b>{{ l.title }}</b>
+              @if (l.done) {
+                <span class="mini-stars" [attr.aria-label]="l.stars + ' de 3 estrellas'">
+                  @for (s of stars3; track s) {
+                    <ui-icon [name]="s <= l.stars ? 'star-fill' : 'star'" [size]="14" />
+                  }
+                </span>
+              } @else if (l.current) {
+                <span class="cta">Empezar aquí</span>
+              } @else if (!l.unlocked) {
+                <span class="muted">Se desbloquea al terminar la anterior</span>
+              }
+            </div>
+          </li>
+        }
+      </ol>
+    </section>
+  }
+
+  <footer class="home-foot">
+    <a routerLink="/estilos">Estilos del proyecto</a>
+  </footer>
+</main>
