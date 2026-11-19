@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Button } from '../../ui/button/button';
@@ -15,8 +15,8 @@ import { findSong, Song } from '../../data/songs';
 
 interface Bar { i: number; midi: number; name: string; geo: KeyGeo; }
 
-/** Distancia vertical entre notas que caen (px). */
-const SPACING = 72;
+/** Píxeles por tiempo entre notas (separación vertical de la caída). */
+const SPACING = 76;
 
 @Component({
   selector: 'app-falling',
@@ -39,11 +39,16 @@ export class Falling {
   protected bars: Bar[] = [];
   protected whiteCount = 7;
 
-  protected cursor = signal(0);
+  protected cursor = signal(0);       // siguiente nota por tocar
+  protected head = signal(0);         // posición continua de la caída (en "tiempos")
+  protected bpm = signal(70);         // tempo (notas por minuto)
   protected finished = signal(false);
   protected demoPlaying = signal(false);
   private okFlash = signal<number | null>(null);
   private badFlash = signal<number | null>(null);
+
+  private raf = 0;
+  private lastTs = 0;
 
   protected progressPct = computed(() =>
     this.bars.length ? this.cursor() / this.bars.length : 0,
@@ -71,11 +76,31 @@ export class Falling {
       i, midi, name: noteName(midi), geo: layout.byMidi[midi],
     }));
     this.notes.notes$.pipe(takeUntilDestroyed()).subscribe((e) => this.onNote(e.midi));
+
+    this.lastTs = performance.now();
+    inject(DestroyRef).onDestroy(() => cancelAnimationFrame(this.raf));
+    this.raf = requestAnimationFrame(this.loop);
   }
 
-  // Desplazamiento vertical de cada nota (cae hacia la línea de toque).
+  /**
+   * Bucle de caída (estilo Artie): la cabeza avanza con el tempo, PERO nunca
+   * pasa de la próxima nota sin tocar → "wait mode": la nota se espera en la
+   * línea hasta que la tocas, y entonces sigue cayendo hacia la siguiente.
+   */
+  private loop = (ts: number = performance.now()): void => {
+    const dt = Math.min(0.05, (ts - this.lastTs) / 1000 || 0);
+    this.lastTs = ts;
+    if (!this.finished() && !this.demoPlaying()) {
+      const speed = this.bpm() / 60;          // tiempos por segundo
+      const cap = this.cursor();              // no rebasar la nota por tocar
+      const next = Math.min(this.head() + speed * dt, cap);
+      if (next !== this.head()) this.head.set(next);
+    }
+    this.raf = requestAnimationFrame(this.loop);
+  };
+
   protected translateFor(i: number): number {
-    return (this.cursor() - i) * SPACING;
+    return (this.head() - i) * SPACING;
   }
   protected stateFor(i: number): 'done' | 'current' | 'next' {
     const c = this.cursor();
@@ -94,7 +119,6 @@ export class Falling {
       this.cursor.set(next);
       if (next >= this.bars.length) this.finish();
     } else {
-      // No castiga: solo marca suave y sigues esperando la nota correcta.
       this.flashBad(incoming);
     }
   }
@@ -116,15 +140,20 @@ export class Falling {
     this.finished.set(true);
   }
 
+  protected slower(): void { this.bpm.update((b) => Math.max(40, b - 10)); }
+  protected faster(): void { this.bpm.update((b) => Math.min(140, b + 10)); }
+
   protected listen(): void {
     if (this.demoPlaying()) return;
     this.demoPlaying.set(true);
-    this.synth.playSequence(this.song.notes, 0.5).then(() => this.demoPlaying.set(false));
+    this.synth.playSequence(this.song.notes, 60 / this.bpm()).then(() => this.demoPlaying.set(false));
   }
 
   protected restart(): void {
     this.finished.set(false);
     this.cursor.set(0);
+    this.head.set(0);
+    this.lastTs = performance.now();
   }
 
   protected leave(): void {

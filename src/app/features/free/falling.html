@@ -7,6 +7,11 @@
       <b>{{ song.title }}</b>
       <ui-progress-bar [value]="progressPct()" [label]="'Avance de ' + song.title" />
     </div>
+    <div class="tempo" role="group" aria-label="Velocidad">
+      <button class="t-btn" (click)="slower()" aria-label="Más lento">−</button>
+      <span class="t-val tnum">{{ bpm() }}</span>
+      <button class="t-btn" (click)="faster()" aria-label="Más rápido">+</button>
+    </div>
     <button ui-button variant="ghost" (click)="listen()" [disabled]="demoPlaying()" aria-label="Escuchar">
       <ui-icon name="volume" [size]="22" />
     </button>
