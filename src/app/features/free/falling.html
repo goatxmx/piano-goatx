@@ -1,0 +1,58 @@
+<div class="falling">
+  <header class="f-top">
+    <button ui-button variant="ghost" (click)="leave()" aria-label="Salir">
+      <ui-icon name="close" [size]="22" />
+    </button>
+    <div class="title">
+      <b>{{ song.title }}</b>
+      <ui-progress-bar [value]="progressPct()" [label]="'Avance de ' + song.title" />
+    </div>
+    <button ui-button variant="ghost" (click)="listen()" [disabled]="demoPlaying()" aria-label="Escuchar">
+      <ui-icon name="volume" [size]="22" />
+    </button>
+  </header>
+
+  <!-- Zona de notas que caen -->
+  <div class="stage">
+    <div class="lanes">
+      @for (b of bars; track b.i) {
+        <div
+          class="bar"
+          [class.black]="b.geo.black"
+          [class.done]="stateFor(b.i) === 'done'"
+          [class.current]="stateFor(b.i) === 'current'"
+          [style.left.%]="b.geo.leftPct"
+          [style.width.%]="b.geo.widthPct"
+          [style.transform]="'translateY(' + translateFor(b.i) + 'px)'">
+          <span class="n">{{ b.name }}</span>
+        </div>
+      }
+    </div>
+    <div class="hitline" aria-hidden="true"></div>
+  </div>
+
+  <!-- Teclado -->
+  <div class="f-keyboard" [class.muted]="demoPlaying()">
+    <ui-piano-keyboard
+      [range]="song.range"
+      [showLabels]="progressSvc.settings().showLabels"
+      [keyboardControl]="true"
+      [disabled]="finished() || demoPlaying()"
+      [states]="keyStates()" />
+  </div>
+
+  <!-- Fin -->
+  @if (finished()) {
+    <div class="done-overlay">
+      <div class="done-card">
+        <ui-icon name="sparkle" [size]="48" />
+        <h2>¡Lo lograste!</h2>
+        <p>Tocaste <b>{{ song.title }}</b> completa.</p>
+        <button ui-button variant="primary" size="lg" [block]="true" (click)="restart()">
+          <ui-icon name="repeat" [size]="20" /> Otra vez
+        </button>
+        <button ui-button variant="ghost" (click)="leave()">Elegir otra canción</button>
+      </div>
+    </div>
+  }
+</div>

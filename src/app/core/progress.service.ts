@@ -5,7 +5,7 @@ interface ProgressData {
   completed: Record<string, { stars: number; best: number }>;
   streak: number;
   lastDay: string | null; // YYYY-MM-DD
-  settings: { anyOctave: boolean; showLabels: boolean };
+  settings: { anyOctave: boolean; showLabels: boolean; unlockAll: boolean };
 }
 
 const KEY = 'piano-goat-progress-v1';
@@ -71,11 +71,18 @@ export class ProgressService {
   private load(): ProgressData {
     const fallback: ProgressData = {
       xp: 0, completed: {}, streak: 0, lastDay: null,
-      settings: { anyOctave: true, showLabels: true },
+      // unlockAll en true durante pruebas (ver §10). Antes del lanzamiento: false.
+      settings: { anyOctave: true, showLabels: true, unlockAll: true },
     };
     try {
       const raw = localStorage.getItem(KEY);
-      return raw ? { ...fallback, ...JSON.parse(raw) } : fallback;
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw) as Partial<ProgressData>;
+      return {
+        ...fallback,
+        ...parsed,
+        settings: { ...fallback.settings, ...(parsed.settings ?? {}) },
+      };
     } catch { return fallback; }
   }
 }

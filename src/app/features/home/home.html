@@ -13,6 +13,15 @@
 <main class="page path">
   <h1>Tu camino</h1>
 
+  <a class="free-mode" routerLink="/libre">
+    <span class="fm-ic"><ui-icon name="play" [size]="26" /></span>
+    <span class="fm-t">
+      <b>Modo libre</b>
+      <small>Toca canciones con las notas que caen. Empieza con Estrellita.</small>
+    </span>
+    <ui-icon name="right" [size]="22" />
+  </a>
+
   @for (u of units(); track u.id) {
     <section class="unit">
       <div class="unit-head">

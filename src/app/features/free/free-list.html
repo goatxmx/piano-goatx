@@ -1,0 +1,22 @@
+<div class="page free-list">
+  <header class="top">
+    <a ui-button variant="ghost" routerLink="/" aria-label="Volver"><ui-icon name="left" [size]="22" /></a>
+    <h1>Modo libre</h1>
+  </header>
+  <p class="lead">Elige una canción. Las notas caen y tú tocas a tu ritmo: se van pintando conforme aciertas.</p>
+
+  <ul class="songs">
+    @for (s of songs; track s.id) {
+      <li>
+        <a class="song" [routerLink]="['/libre', s.id]">
+          <span class="ic"><ui-icon name="note" [size]="26" /></span>
+          <span class="t">
+            <b>{{ s.title }}</b>
+            <small>{{ s.subtitle }}</small>
+          </span>
+          <ui-icon name="right" [size]="22" />
+        </a>
+      </li>
+    }
+  </ul>
+</div>

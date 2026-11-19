@@ -48,6 +48,9 @@ export class Setup {
   protected toggleLabels(): void {
     this.progress.setSetting('showLabels', !this.progress.settings().showLabels);
   }
+  protected toggleUnlockAll(): void {
+    this.progress.setSetting('unlockAll', !this.progress.settings().unlockAll);
+  }
 
   protected finish(): void {
     this.router.navigate(['/']);

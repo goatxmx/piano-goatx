@@ -24,6 +24,7 @@ export class Home {
 
   protected units = computed<UnitView[]>(() => {
     const completed = this.progress.completed();
+    const unlockAll = this.progress.settings().unlockAll;
     // Primera lección no hecha y desbloqueada = "actual".
     let currentFound = false;
     const order = ALL_LESSONS;
@@ -36,7 +37,7 @@ export class Home {
         const globalIdx = order.findIndex((x) => x.id === l.id);
         const prev = globalIdx > 0 ? order[globalIdx - 1] : null;
         const done = !!completed[l.id];
-        const unlocked = globalIdx === 0 || !!(prev && completed[prev.id]);
+        const unlocked = unlockAll || globalIdx === 0 || !!(prev && completed[prev.id]);
         const current = !currentFound && unlocked && !done;
         if (current) currentFound = true;
         return { id: l.id, title: l.title, done, stars: completed[l.id]?.stars ?? 0, unlocked, current };

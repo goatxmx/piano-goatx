@@ -109,6 +109,10 @@
       <span><b>Mostrar nombres en las teclas</b><small>Do, Re, Mi… sobre cada tecla.</small></span>
       <span class="toggle" [class.on]="progress.settings().showLabels"></span>
     </label>
+    <label class="switch" (click)="toggleUnlockAll()">
+      <span><b>Desbloquear todas las lecciones</b><small>Modo prueba: abre todo sin orden.</small></span>
+      <span class="toggle" [class.on]="progress.settings().unlockAll"></span>
+    </label>
   </section>
 
   <button ui-button variant="primary" size="lg" [block]="true" [disabled]="!choice()" (click)="finish()">

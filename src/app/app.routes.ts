@@ -18,6 +18,17 @@ export const routes: Routes = [
     title: 'Lección · Piano GoatX',
   },
   {
+    path: 'libre',
+    pathMatch: 'full',
+    loadComponent: () => import('./features/free/free-list').then((m) => m.FreeList),
+    title: 'Modo libre · Piano GoatX',
+  },
+  {
+    path: 'libre/:id',
+    loadComponent: () => import('./features/free/falling').then((m) => m.Falling),
+    title: 'Tocar · Piano GoatX',
+  },
+  {
     path: 'completado',
     loadComponent: () => import('./features/complete/complete').then((m) => m.Complete),
     title: '¡Lección terminada! · Piano GoatX',
