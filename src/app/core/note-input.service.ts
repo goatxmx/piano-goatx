@@ -85,16 +85,23 @@ export class NoteInputService {
   }
 
   /**
-   * Bucle de detección. Lógica de "ataque":
-   * una nota se emite cuando el tono se mantiene estable unos cuadros y
-   * (a) es distinta a la anterior, (b) venimos de silencio, o
-   * (c) el volumen da un salto (volviste a presionar la misma tecla).
+   * Bucle de detección con detector de "inicio de nota" (onset).
+   * Una nota se emite cuando el tono es estable unos cuadros y:
+   *  (a) es distinta a la anterior,
+   *  (b) venimos de silencio, o
+   *  (c) hay un nuevo ataque: el volumen salta por encima de una envolvente
+   *      lenta (así detecta Sol-Sol seguidos sin necesidad de pausa).
+   * Un anti-rebote de 90 ms evita duplicar una nota sostenida.
    */
   private listen(analyser: AnalyserNode, sampleRate: number): void {
     const buf = new Float32Array(analyser.fftSize);
     const detector = PitchDetector.forFloat32Array(analyser.fftSize);
-    let candidate = -1, stableFrames = 0, lastEmitted = -1;
-    let armed = true, prevRms = 0;
+    let candidate = -1, stableFrames = 0, lastEmitted = -1, lastEmitTime = 0;
+    let armed = true, env = 0;
+
+    const STABLE = 2;          // cuadros de tono estable
+    const ONSET_FACTOR = 1.5;  // salto de volumen que cuenta como nuevo ataque
+    const MIN_REPEAT_MS = 90;  // anti-rebote para la MISMA nota
 
     const tick = () => {
       analyser.getFloatTimeDomainData(buf);
@@ -106,27 +113,36 @@ export class NoteInputService {
       const threshold = this.micThreshold();
       if (rms < threshold) {
         armed = true; candidate = -1; stableFrames = 0;
+        env *= 0.8;
         this.micPitch.set(null);
       } else {
+        // Onset: ataque claro por encima de la envolvente lenta.
+        const onset = rms > env * ONSET_FACTOR && rms > threshold * 1.5;
+        // La envolvente sube rápido y baja lento (no sigue de cerca al rms).
+        env += (rms - env) * (rms > env ? 0.25 : 0.08);
+
         const [freq, clarity] = detector.findPitch(buf, sampleRate);
         if (clarity > this.micClarity() && freq > 25 && freq < 4500) {
           const exact = freqToMidi(freq);
           const midi = Math.round(exact);
           this.micPitch.set({ midi, cents: Math.round((exact - midi) * 100) });
 
-          const reattack = rms > prevRms * 1.8 && rms > threshold * 2;
           if (midi === candidate) stableFrames++;
           else { candidate = midi; stableFrames = 1; }
 
-          if (reattack) armed = true;
-          if (stableFrames >= 3 && (armed || midi !== lastEmitted)) {
+          if (onset) armed = true;
+
+          const now = performance.now();
+          const isNew = midi !== lastEmitted;
+          const repeatOk = isNew || now - lastEmitTime > MIN_REPEAT_MS;
+          if (stableFrames >= STABLE && (isNew || armed) && repeatOk) {
             this.emit(midi, 'mic');
             lastEmitted = midi;
+            lastEmitTime = now;
             armed = false;
           }
         }
       }
-      prevRms = prevRms * 0.6 + rms * 0.4;
       this.rafId = requestAnimationFrame(tick);
     };
     tick();
