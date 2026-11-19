@@ -27,6 +27,10 @@ export class NoteInputService {
 
   private mutedUntil = 0;
 
+  constructor() {
+    this.applySensitivity(this.sensitivity());
+  }
+
   // ---------- API común ----------
   emit(midi: number, source: NoteSource): void {
     if (source === 'mic' && performance.now() < this.mutedUntil) return;
@@ -49,6 +53,29 @@ export class NoteInputService {
   readonly micThreshold = signal(0.006);
   /** Claridad mínima del detector de tono (McLeod). Más bajo = detecta más fácil. */
   readonly micClarity = signal(0.8);
+
+  /** Sensibilidad general 0..1 (sube ambos: umbral + claridad). Se guarda por dispositivo. */
+  private readonly SENS_KEY = 'piano-goat-mic-sens';
+  readonly sensitivity = signal(this.loadSensitivity());
+
+  /** 0 = estricto (poco sensible) … 1 = muy sensible. Útil para iPads con micro débil. */
+  setSensitivity(v: number): void {
+    const c = Math.max(0, Math.min(1, v));
+    this.sensitivity.set(c);
+    this.applySensitivity(c);
+    try { localStorage.setItem(this.SENS_KEY, String(c)); } catch { /* modo privado */ }
+  }
+
+  private applySensitivity(v: number): void {
+    const lerp = (a: number, b: number) => a + (b - a) * v;
+    this.micThreshold.set(lerp(0.02, 0.0025)); // más sensible => umbral más bajo
+    this.micClarity.set(lerp(0.90, 0.68));     // más sensible => exige menos claridad
+  }
+
+  private loadSensitivity(): number {
+    try { const r = localStorage.getItem(this.SENS_KEY); return r ? Number(r) : 0.55; }
+    catch { return 0.55; }
+  }
 
   async startMic(): Promise<void> {
     if (this.micStatus() === 'on' || this.micStatus() === 'starting') return;

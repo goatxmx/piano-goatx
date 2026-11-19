@@ -29,7 +29,7 @@ export class Setup {
     return p ? noteNameOctave(p.midi) : null;
   });
   protected levelPct = computed(() => Math.round(this.input.micLevel() * 100));
-  protected thresholdPct = computed(() => Math.round(this.input.micThreshold() * 1000));
+  protected sensPct = computed(() => Math.round(this.input.sensitivity() * 100));
 
   protected choose(c: InputChoice): void {
     this.choice.set(c);
@@ -37,9 +37,8 @@ export class Setup {
     if (c === 'midi') this.input.startMidi();
   }
 
-  protected onThreshold(e: Event): void {
-    const v = Number((e.target as HTMLInputElement).value);
-    this.input.micThreshold.set(v / 1000);
+  protected onSens(e: Event): void {
+    this.input.setSensitivity(Number((e.target as HTMLInputElement).value) / 100);
   }
 
   protected toggleAnyOctave(): void {

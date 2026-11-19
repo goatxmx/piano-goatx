@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Icon } from '../icon/icon';
 import { NoteInputService } from '../../core/note-input.service';
 import { noteNameOctave } from '../../core/notes';
@@ -30,6 +30,13 @@ export class InputStatus {
     return p ? noteNameOctave(p.midi) : null;
   });
 
+  protected showAdj = signal(false);
+  protected sensPct = computed(() => Math.round(this.input.sensitivity() * 100));
+
   protected startMic(): void { this.input.startMic(); }
   protected startMidi(): void { this.input.startMidi(); }
+  protected toggleAdj(): void { this.showAdj.update((v) => !v); }
+  protected onSens(e: Event): void {
+    this.input.setSensitivity(Number((e.target as HTMLInputElement).value) / 100);
+  }
 }

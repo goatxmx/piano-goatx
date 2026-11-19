@@ -61,8 +61,8 @@
 
           <label class="slider">
             <span>Sensibilidad</span>
-            <input type="range" min="3" max="40" [value]="thresholdPct()" (input)="onThreshold($event)" />
-            <small>Si cuenta ruido de más, baja la sensibilidad.</small>
+            <input type="range" min="0" max="100" [value]="sensPct()" (input)="onSens($event)" />
+            <small>¿Cuesta detectar (iPad)? Súbela. ¿Cuenta ruido de más? Bájala.</small>
           </label>
         }
       }

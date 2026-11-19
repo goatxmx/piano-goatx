@@ -5,6 +5,16 @@
     @if (heard(); as n) { · <b class="heard">{{ n }}</b> }
   </div>
   <span class="meter" aria-hidden="true"><span class="meter-fill" [style.width.%]="levelPct()"></span></span>
+  <button class="adj-btn" (click)="toggleAdj()" aria-label="Ajustar sensibilidad">
+    <ui-icon name="settings" [size]="18" />
+  </button>
+  @if (showAdj()) {
+    <label class="sens">
+      <span>Sensibilidad</span>
+      <input type="range" min="0" max="100" [value]="sensPct()" (input)="onSens($event)" />
+      <small>¿Cuesta detectar (iPad)? Súbela. ¿Cuenta ruido de más? Bájala.</small>
+    </label>
+  }
 } @else if (input.midiStatus() === 'on') {
   <div class="chip live"><ui-icon name="midi" [size]="18" /> Teclado USB conectado</div>
 } @else {

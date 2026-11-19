@@ -67,3 +67,27 @@
   color: var(--text-faint);
   &.err { color: var(--bad); }
 }
+
+.adj-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-soft);
+  &:active { transform: scale(0.95); }
+}
+
+.sens {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: var(--sp-1);
+  span { font-weight: var(--fw-bold); font-size: var(--fs-sm); }
+  input { width: min(320px, 90%); accent-color: var(--accent); min-height: 28px; }
+  small { font-size: var(--fs-xs); color: var(--text-faint); text-align: center; }
+}
