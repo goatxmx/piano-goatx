@@ -1,8 +1,10 @@
 @if (input.micStatus() === 'on') {
   <div class="chip live">
     <span class="dot" [style.transform]="'scale(' + (1 + level() * 0.8) + ')'"></span>
-    Escuchando tu piano
+    Escuchando
+    @if (heard(); as n) { · <b class="heard">{{ n }}</b> }
   </div>
+  <span class="meter" aria-hidden="true"><span class="meter-fill" [style.width.%]="levelPct()"></span></span>
 } @else if (input.midiStatus() === 'on') {
   <div class="chip live"><ui-icon name="midi" [size]="18" /> Teclado USB conectado</div>
 } @else {

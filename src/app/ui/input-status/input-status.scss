@@ -24,6 +24,22 @@
   background: var(--ok);
   transition: transform 80ms linear;
 }
+.heard { font-family: var(--font-display); color: var(--accent-strong); }
+
+.meter {
+  display: inline-block;
+  width: 90px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--bg-sunken);
+  overflow: hidden;
+}
+.meter-fill {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+  transition: width 80ms linear;
+}
 
 .activate { display: inline-flex; gap: var(--sp-2); }
 

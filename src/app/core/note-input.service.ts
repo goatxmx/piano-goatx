@@ -46,7 +46,9 @@ export class NoteInputService {
   private rafId = 0;
 
   /** Sensibilidad: nivel RMS mínimo para considerar que hay sonido */
-  readonly micThreshold = signal(0.01);
+  readonly micThreshold = signal(0.006);
+  /** Claridad mínima del detector de tono (McLeod). Más bajo = detecta más fácil. */
+  readonly micClarity = signal(0.8);
 
   async startMic(): Promise<void> {
     if (this.micStatus() === 'on' || this.micStatus() === 'starting') return;
@@ -107,7 +109,7 @@ export class NoteInputService {
         this.micPitch.set(null);
       } else {
         const [freq, clarity] = detector.findPitch(buf, sampleRate);
-        if (clarity > 0.88 && freq > 25 && freq < 4500) {
+        if (clarity > this.micClarity() && freq > 25 && freq < 4500) {
           const exact = freqToMidi(freq);
           const midi = Math.round(exact);
           this.micPitch.set({ midi, cents: Math.round((exact - midi) * 100) });
