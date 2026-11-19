@@ -1,19 +1,19 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Piano GoatX">
-  <!-- Azulejo de papel cálido -->
-  <rect x="2" y="2" width="60" height="60" rx="15" fill="#f7f0e1"/>
-  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="14.25" stroke="#e4d4b4" stroke-width="1.5"/>
+  <!-- Azulejo blanco con borde negro -->
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#ffffff"/>
+  <rect x="3" y="3" width="58" height="58" rx="14" stroke="#000000" stroke-width="2.5"/>
 
-  <!-- Teclas (mundo del piano) -->
-  <g stroke="#3c342a" stroke-width="1.6" stroke-linecap="round" opacity="0.5">
-    <line x1="18" y1="45.5" x2="18" y2="52"/>
-    <line x1="27" y1="45.5" x2="27" y2="52"/>
-    <line x1="36" y1="45.5" x2="36" y2="52"/>
-    <line x1="45" y1="45.5" x2="45" y2="52"/>
+  <!-- Teclas (blanco y negro) -->
+  <g stroke="#000000" stroke-width="2" stroke-linecap="round">
+    <line x1="14" y1="46" x2="50" y2="46"/>
+    <line x1="18" y1="46" x2="18" y2="52.5"/>
+    <line x1="27" y1="46" x2="27" y2="52.5"/>
+    <line x1="36" y1="46" x2="36" y2="52.5"/>
+    <line x1="45" y1="46" x2="45" y2="52.5"/>
   </g>
-  <line x1="14" y1="45.5" x2="50" y2="45.5" stroke="#3c342a" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
 
-  <!-- Nota en tinta, con plica y corchea en terracota -->
-  <path d="M38 14 V39" stroke="#211d17" stroke-width="3" stroke-linecap="round"/>
-  <path d="M38 14 C 43 15.5, 50 17, 49 24" stroke="#d66a3c" stroke-width="3" stroke-linecap="round" fill="none"/>
-  <ellipse cx="31" cy="39.5" rx="7.5" ry="5.8" transform="rotate(-20 31 39.5)" fill="#211d17"/>
+  <!-- Nota: cabeza negra, plica y corchea en azul vivo -->
+  <path d="M38 14 V39" stroke="#000000" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M38 14 C 43 15.5, 50 17, 49 24" stroke="#2f6bff" stroke-width="3.6" stroke-linecap="round" fill="none"/>
+  <ellipse cx="31" cy="39.5" rx="7.5" ry="5.8" transform="rotate(-20 31 39.5)" fill="#000000"/>
 </svg>

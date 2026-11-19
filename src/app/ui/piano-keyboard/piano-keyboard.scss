@@ -68,7 +68,7 @@
   top: 0;
   height: 62%;
   background: var(--key-black);
-  color: #e9ddc8;
+  color: #ffffff;
   border: none;
   border-radius: 0 0 var(--r-sm) var(--r-sm);
   box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35), var(--sh-2);
@@ -76,8 +76,8 @@
 
   .label { font-size: var(--fs-xs); padding-bottom: var(--sp-2); opacity: 0.85; }
 
-  &.press { background: var(--key-press); color: var(--ink-900); transform: translateY(2px); box-shadow: none; }
-  &.hint  { background: var(--key-hint-edge); color: var(--ink-900); }
+  &.press { background: var(--key-press); color: #ffffff; transform: translateY(2px); box-shadow: none; }
+  &.hint  { background: var(--key-hint-edge); color: #ffffff; }
   &.ok    { background: var(--key-ok); color: #fff; }
   &.bad   { background: var(--key-bad); color: #fff; }
 }
